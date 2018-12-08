@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
+const recipeRoutes = require('./routes/recipes');
 const app = express();
 
 mongoose.connect(keys.MONGO_URI)
@@ -22,5 +23,6 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/account', profileRoutes);
+app.use('/api/recipes', recipeRoutes);
 
 module.exports = app;
