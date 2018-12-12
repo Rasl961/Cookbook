@@ -1,0 +1,99 @@
+<div class="container">
+    <form>
+        <div class="form-row mt-3 mb-3">
+          <div class="col-10">
+            <input type="text" class="form-control" name= "recipe-search" placeholder="Search a recipe" [(ngModel)]="searchText">
+          </div>
+          <div class="col-2">
+            <input type="button" class="btn btn-success btn-block" value="Add recipe" (click)="openModal(template)">
+          </div>
+        </div>
+      </form>
+      <table class="table table-bordered text-center">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Created by</th>
+          <th scope="col">Created Date</th>
+          <th scope="col">Delete</th>
+          <th scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let recipe of recipes | filter : searchText">
+          <td>{{recipe.name}}</td>
+          <td class="col-2">{{recipe.description}}</td>
+          <td>{{recipe.createdBy}}</td>
+          <td>{{recipe.date_created | date}}</td>
+          <td>
+            <button class="btn btn-danger btn-block" (click)="deleteRecipe(recipe._id)">Delete</button>
+          </td>
+          <td>
+            <button class="btn btn-info btn-block" (click)="openEditModal(editRecipePopUp, recipe)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add a new recipe</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form  [formGroup]="recipeForm">
+      <div class="form-group">
+        <div class="input-group input-group-lg">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="name">Name</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Sizing example input" formControlName="name" aria-describedby="inputGroup-sizing-lg">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" rows="5" id="description" formControlName="description" ></textarea>
+          </div>
+  </div>
+</form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success" (click)="onSubmit()">Add</button>
+    </div>
+</ng-template>
+
+
+<ng-template #editRecipePopUp>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Edit the recipe</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form  [formGroup]="recipeForm">
+        <div class="form-group">
+          <div class="input-group input-group-lg">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="name">Name</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Sizing example input" formControlName="name" aria-describedby="inputGroup-sizing-lg">
+          </div>
+          <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea class="form-control" rows="5" id="description" formControlName="description" ></textarea>
+            </div>
+    </div>
+  </form>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success" (click)="editRecipe()">Edit</button>
+      </div>
+  </ng-template>
+
+
