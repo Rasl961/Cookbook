@@ -23,7 +23,7 @@ module.exports.login = async function (req, res) {
       });
     }
   } else {
-    res.status(404).json({
+    res.json({
       returnMessage: 'User is not found.'
     });
   }
@@ -34,7 +34,7 @@ module.exports.register = async function (req, res) {
   const candidate = await User.findOne({email: req.body.email});
 
   if (candidate) {
-    res.status(409).json({
+    res.json({
       returnMessage: 'The user with this email already exits in system.'
     });
   } else {
@@ -48,7 +48,9 @@ module.exports.register = async function (req, res) {
     });
     try {
       await user.save();
-      res.status(201).json(user);
+      res.status(201).json({
+        returnMessage: 'User has been created.'
+      });
     } catch (e) {
       res.json({
         returnMessage: 'Something went wrong.'

@@ -12,10 +12,9 @@ export class AuthService {
   private token = null;
   public isAuthenticated = false;
 
-  constructor(private http: HttpClient, private router: Router) {
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
-  loginUser(user: User): Observable<{ token: string }> {
+  loginUser(user: User): Observable<any> {
     return this.http.post<{ token: string }>('http://localhost:3000/api/auth/login', user)
       .pipe(
         tap(
@@ -28,8 +27,8 @@ export class AuthService {
       );
   }
 
-  registerUser(user: User): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>('http://localhost:3000/api/auth/register', user);
+  registerUser(user: User) {
+    return this.http.post<User>('http://localhost:3000/api/auth/register', user);
   }
 
   setToken(token: string) {

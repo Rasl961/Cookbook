@@ -6,10 +6,15 @@ import { RegistrationPageComponent } from './components/registration-page/regist
 import { AppRoutingModule } from './app-routing.module';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CollapseModule } from 'ngx-bootstrap';
 import { SearchPipe } from './shared/pipes/search.pipe';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { from } from 'rxjs';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { TokenInterceptor } from '../helpers/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -17,7 +22,9 @@ import { SearchPipe } from './shared/pipes/search.pipe';
     RegistrationPageComponent,
     LoginPageComponent,
     RecipesComponent,
-    SearchPipe
+    SearchPipe,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -26,8 +33,11 @@ import { SearchPipe } from './shared/pipes/search.pipe';
     FormsModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
-    ],
-  providers: [],
+    CollapseModule,
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

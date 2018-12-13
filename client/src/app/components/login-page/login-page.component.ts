@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-login-page',
@@ -10,8 +12,11 @@ import { Router } from '@angular/router';
 })
 export class LoginPageComponent implements OnInit {
   public loginForm: FormGroup;
+  public modalRef: BsModalRef;
+  public loginErrorMsg: string;
+  @ViewChild('loginPopUp') loginPopUp;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private modalService: BsModalService) {}
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -28,14 +33,18 @@ export class LoginPageComponent implements OnInit {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password
     };
-    console.log(user);
-    this.loginForm.disable();
     this.auth.loginUser(user).subscribe(data => {
+      if (data.returnMessage) {
+        this.loginErrorMsg = data.returnMessage;
+        this.openLoginModal(this.loginPopUp);
+      }
       this.router.navigate(['./recipes']);
     },
       error => {
         console.error(error);
       });
   }
-
+  openLoginModal(loginPopUp: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(loginPopUp);
+  }
 }

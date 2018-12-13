@@ -14,17 +14,15 @@
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
-          <th scope="col">Created by</th>
           <th scope="col">Created Date</th>
           <th scope="col">Delete</th>
           <th scope="col">Edit</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let recipe of recipes | filter : searchText">
+        <tr *ngFor="let recipe of recipes |  filter : 'name' : searchText;">
           <td>{{recipe.name}}</td>
           <td class="col-2">{{recipe.description}}</td>
-          <td>{{recipe.createdBy}}</td>
           <td>{{recipe.date_created | date}}</td>
           <td>
             <button class="btn btn-danger btn-block" (click)="deleteRecipe(recipe._id)">Delete</button>
